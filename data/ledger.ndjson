@@ -11,3 +11,9 @@
 {"ts": "2025-08-10T20:06:55Z", "event": "channel.promote", "dataset": "core", "channel": "prod", "manifest": "dev-seed"}
 {"event": "api.objects.get", "sub": "user:dev", "hash": "sha256:1dc3d0e4809ec1c49d3ad5c524dadabbb5f80f9d7eb1053e3b5a0c71687f11a6", "view": "llm_min", "ts": "2025-08-10T20:07:14.797731+00:00"}
 {"ts": "2025-08-10T20:08:20Z", "event": "channel.promote", "dataset": "core", "channel": "staging", "manifest": "test-manifest"}
+{"event": "api.objects.get", "sub": "user:dev", "hash": "sha256:1dc3d0e4809ec1c49d3ad5c524dadabbb5f80f9d7eb1053e3b5a0c71687f11a6", "view": "llm_min", "ts": "2025-08-10T20:34:14.812603+00:00"}
+{"event": "api.objects.get", "sub": "user:dev", "hash": "sha256:1dc3d0e4809ec1c49d3ad5c524dadabbb5f80f9d7eb1053e3b5a0c71687f11a6", "view": "llm_min", "ts": "2025-08-10T20:34:19.177057+00:00"}
+{"event": "api.objects.get", "sub": "user:dev", "hash": "sha256:1dc3d0e4809ec1c49d3ad5c524dadabbb5f80f9d7eb1053e3b5a0c71687f11a6", "view": "llm_min", "ts": "2025-08-10T20:34:24.137747+00:00"}
+{"event": "api.refs.get", "sub": "user:dev", "ref": "/home/human/Documents/GitHub/bnxlink/data/refs/entity/project_apollo/2025-08-10.json", "ts": "2025-08-10T20:34:27.112653+00:00"}
+{"event": "api.manifests.get", "sub": "user:dev", "dataset": "core", "manifest": "dev-seed", "ts": "2025-08-10T20:34:30.714317+00:00"}
+{"event": "api.objects.get", "sub": "user:dev", "hash": "sha256:aa657141baa2fa60294414623cba73b7df3968ba51f1067547cb4ff63406f09f", "view": "llm_min", "ts": "2025-08-10T20:34:38.405879+00:00"}

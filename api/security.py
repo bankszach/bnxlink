@@ -1,52 +1,43 @@
 from __future__ import annotations
-from datetime import datetime, timezone
+from fastapi import Header, HTTPException
 from jose import jwt, JWTError
-from fastapi import HTTPException, status, Depends, Header
+from pydantic_settings import BaseSettings
 
-ALGO = "HS256"  # dev-only; swap to RS256 + JWKS later
-AUDIENCE = "bnx-data"
-DEV_SECRET = "dev-only-not-for-prod"  # override via BNX_DEV_JWT_SECRET env
+class Settings(BaseSettings):
+    jwt_algorithm: str = "HS256"
+    jwt_issuer: str = "bnxlink"
+    jwt_audience: str = "bnx-data"
+    jwt_secret: str = "dev-only-not-for-prod"
+    jwt_public_key: str | None = None
+    jwt_private_key: str | None = None
+    cors_origins: str = ""
+    
+    model_config = {"env_prefix": "BNX_", "env_file": ".env"}
 
+settings = Settings()
 
-class Principal:
-    def __init__(self, sub: str, scope: list[str], purpose: str | None):
-        self.sub = sub
-        self.scope = scope
-        self.purpose = purpose
-
-
-def verify(token: str) -> Principal:
-    secret = __import__("os").environ.get("BNX_DEV_JWT_SECRET", DEV_SECRET)
+def _decode(token: str) -> dict:
     try:
-        claims = jwt.decode(
-            token,
-            secret,
-            algorithms=[ALGO],
-            audience=AUDIENCE,
-            options={"verify_exp": True},
-        )
-    except JWTError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail=f"invalid token: {e}"
-        )
+        if settings.jwt_algorithm.upper() == "RS256":
+            if not settings.jwt_public_key:
+                raise HTTPException(status_code=500, detail={"error":{"code":"server_config","message":"Missing BNX_JWT_PUBLIC_KEY"}})
+            return jwt.decode(token, settings.jwt_public_key, algorithms=["RS256"],
+                              audience=settings.jwt_audience, issuer=settings.jwt_issuer)
+        return jwt.decode(token, settings.jwt_secret, algorithms=["HS256"],
+                          audience=settings.jwt_audience, issuer=settings.jwt_issuer)
+    except JWTError:
+        raise HTTPException(status_code=401, detail={"error":{"code":"unauthorized","message":"Unauthorized"}})
 
-    exp = claims.get("exp")
-    if exp and datetime.fromtimestamp(exp, tz=timezone.utc) < datetime.now(
-        tz=timezone.utc
-    ):
-        raise HTTPException(status_code=401, detail="token expired")
+def require_bearer(authorization: str | None = Header(None, alias="Authorization")) -> dict:
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail={"error":{"code":"unauthorized","message":"Unauthorized"}})
+    claims = _decode(authorization.split(" ", 1)[1])
+    scopes = claims.get("scope") or claims.get("scopes") or ""
+    scope_list = [s for s in (scopes if isinstance(scopes, str) else " ".join(scopes)).split() if s]
+    return {"sub": claims.get("sub"), "scopes": set(scope_list), "purpose": claims.get("purpose"), "claims": claims}
 
-    scope = claims.get("scope", "")
-    scope_list = scope.split() if isinstance(scope, str) else list(scope or [])
-    return Principal(
-        sub=claims.get("sub", "unknown"), scope=scope_list, purpose=claims.get("purpose")
-    )
-
-
-def bearer(auth: str = Header(..., alias="Authorization")) -> Principal:
-    if not auth.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="missing bearer")
-    token = auth.split(" ", 1)[1]
-    return verify(token)
+def require_scope(principal: dict, needed: str):
+    if needed not in principal["scopes"]:
+        raise HTTPException(status_code=403, detail={"error":{"code":"forbidden","message":f"Missing scope: {needed}"}})
 
 

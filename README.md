@@ -43,6 +43,19 @@ make token
 make agent
 ```
 
+### Docker Quickstart
+```bash
+# Build and run
+docker build -t bnxlink:0.1.0 .
+docker run --rm -p 8000:8000 --env-file .env bnxlink:0.1.0
+
+# Or with custom environment
+docker run --rm -p 8000:8000 \
+  -e BNX_JWT_ALGORITHM=HS256 \
+  -e BNX_JWT_SECRET=your-secret \
+  bnxlink:0.1.0
+```
+
 ---
 
 ## Core Concepts
@@ -84,20 +97,36 @@ See [docs/architecture.md](docs/architecture.md) for more detail.
 
 Built with FastAPI.
 
-**Auth**: JWT Bearer tokens (HS256 for dev; RS256 planned for production).
+**Auth**: JWT Bearer tokens with environment-configurable algorithms:
+- `HS256` for development (default)
+- `RS256` for production with PEM keys
 
 **Scopes**:
-- `objects:read`
-- `objects:read:redacted`
-- `manifests:read`
-- `manifests:write`
-- `channels:promote`
+- `objects:read` → Full object access
+- `objects:read:redacted` → Limited to `llm_min` view only
+- `manifests:read` → Access to manifest data
+- `channels:promote` → Promote manifests between channels
+
+**Redaction Gating**: Users with only `objects:read:redacted` scope cannot request full views.
+
+**Error Format**: Consistent error responses with codes and messages:
+```json
+{"error": {"code": "forbidden", "message": "Missing scope: objects:read"}}
+```
 
 Example:
 ```bash
 curl -H "Authorization: Bearer $TOKEN" \
   "http://localhost:8000/objects/sha256:1234...?view=llm_min"
 ```
+
+**Endpoints**:
+- `/health` — Health check
+- `/docs` — Interactive API documentation
+- `/metrics` — Prometheus metrics
+- `/objects/{hash}` — Get objects with ETag caching
+- `/manifests/{dataset}/{id}` — Get manifests
+- `/channels/{dataset}/{channel}:promote` — Promote manifests
 
 ---
 
@@ -135,6 +164,17 @@ pytest -q
 ```
 
 ---
+
+## Security
+
+**Important**: The default JWT secret (`dev-only-not-for-prod`) is for development only. In production:
+
+1. Set `BNX_JWT_ALGORITHM=RS256`
+2. Provide `BNX_JWT_PUBLIC_KEY` and `BNX_JWT_PRIVATE_KEY` as PEM files
+3. Use strong, unique secrets for `BNX_JWT_SECRET` if staying with HS256
+4. Configure `BNX_CORS_ORIGINS` to restrict cross-origin requests
+
+See [SECURITY.md](SECURITY.md) for more details.
 
 ## Contributing
 

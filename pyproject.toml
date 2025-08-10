@@ -1,0 +1,15 @@
+[project]
+name = "bnxlink"
+version = "0.1.0"
+description = "Content-addressed, manifest-driven data pipeline scaffold for agents, APIs, and reproducible datasets."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+dependencies = [
+  "fastapi", "uvicorn[standard]", "python-jose[cryptography]",
+  "pydantic-settings", "jsonschema", "duckdb", "rich",
+  "prometheus-fastapi-instrumentator"
+]
+
+[project.scripts]
+bnx-agent = "agent.cli:main"
