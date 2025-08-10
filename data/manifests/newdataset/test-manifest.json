@@ -1,25 +1,13 @@
 {
-  "manifest_id": "dev-seed",
+  "manifest_id": "test-manifest",
   "dataset": "core",
-  "created_at": "2025-08-10T21:52:11Z",
+  "created_at": "2025-08-10T20:08:12Z",
   "entries": [
     {
       "kind": "EntityRecord",
       "logical_id": "project_apollo",
       "date": "2025-08-10",
       "object": "sha256:1dc3d0e4809ec1c49d3ad5c524dadabbb5f80f9d7eb1053e3b5a0c71687f11a6"
-    },
-    {
-      "kind": "EntityRecord",
-      "logical_id": "team_systems",
-      "date": "2025-08-10",
-      "object": "sha256:e35c0eaecc84c2f55c764fa3dd5ac76e403c7bed6148b1e944055f71b184feee"
-    },
-    {
-      "kind": "ActivityRecord",
-      "logical_id": "deploy_apollo",
-      "date": "2025-08-10",
-      "object": "sha256:2bb86b9eb3004e8bb0ff70ee3579f1a530e191e465f7d69646fb1b56f7ee304a"
     },
     {
       "kind": "ActivityRecord",
@@ -31,12 +19,6 @@
   "objects": [
     {
       "hash": "sha256:1dc3d0e4809ec1c49d3ad5c524dadabbb5f80f9d7eb1053e3b5a0c71687f11a6"
-    },
-    {
-      "hash": "sha256:e35c0eaecc84c2f55c764fa3dd5ac76e403c7bed6148b1e944055f71b184feee"
-    },
-    {
-      "hash": "sha256:2bb86b9eb3004e8bb0ff70ee3579f1a530e191e465f7d69646fb1b56f7ee304a"
     },
     {
       "hash": "sha256:aa657141baa2fa60294414623cba73b7df3968ba51f1067547cb4ff63406f09f"

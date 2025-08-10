@@ -1,7 +1,7 @@
 {
-  "manifest_id": "dev-seed",
+  "manifest_id": "test-promotion",
   "dataset": "core",
-  "created_at": "2025-08-10T21:52:11Z",
+  "created_at": "2025-08-10T21:21:57Z",
   "entries": [
     {
       "kind": "EntityRecord",

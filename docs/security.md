@@ -318,3 +318,4 @@ BNX Link's security model is designed to evolve from a development-focused imple
 The production hardening plan focuses on industry-standard security practices, including advanced authentication, comprehensive access controls, data protection, and security monitoring. This phased approach ensures security improvements are implemented systematically while maintaining system stability and functionality.
 
 Security is an ongoing process that requires continuous attention, regular updates, and community involvement. We welcome security feedback, vulnerability reports, and contributions to improve BNX Link's security posture.
+

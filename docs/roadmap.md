@@ -225,3 +225,4 @@ BNX Link is designed as a foundation for building robust, scalable data pipeline
 This roadmap represents our vision for BNX Link's evolution into a comprehensive, enterprise-ready data pipeline platform. We're committed to maintaining the core principles of content addressing, integrity, and security while expanding functionality to meet real-world needs.
 
 The roadmap is a living document that will evolve based on community feedback, technical requirements, and emerging industry standards. We welcome input from users, contributors, and stakeholders to help shape the future of BNX Link.
+

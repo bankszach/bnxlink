@@ -128,6 +128,41 @@ curl -H "Authorization: Bearer $TOKEN" \
 - `/manifests/{dataset}/{id}` — Get manifests
 - `/channels/{dataset}/{channel}:promote` — Promote manifests
 
+**Promotion API**:
+The promotion endpoint accepts either a manifest ID (string) or full manifest object (dict):
+
+```bash
+# Promote by ID (existing manifest file)
+curl -X POST "http://localhost:8000/channels/core/prod:promote" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"manifest": "dev-seed"}'
+
+# Promote with full manifest (creates snapshot if needed)
+curl -X POST "http://localhost:8000/channels/core/prod:promote" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"manifest": {"manifest_id": "new-release", ...}}'
+```
+
+**Channels Storage Format**:
+Channels are stored in normalized format under `data/channels.yaml`:
+
+```yaml
+core:
+  prod:
+    current:
+      id: dev-seed
+      etag: sha256:dev-seed1234567890abcdef
+      promoted_at: 2025-08-10T14:32:20.579467Z
+      by: test-user
+    history:
+      - id: previous-release
+        etag: sha256:previous1234567890abcdef
+        promoted_at: 2025-08-10T12:00:00Z
+        by: test-user
+```
+
 ---
 
 ## Agent CLI

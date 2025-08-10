@@ -1,0 +1,55 @@
+{
+  "body": {
+    "entity_id": "team_systems",
+    "entity_type": "team",
+    "attributes": {
+      "summary": "Systems engineering team",
+      "size": 8,
+      "lead": "alice.smith"
+    },
+    "labels": {
+      "env": "dev",
+      "domain": "infrastructure"
+    },
+    "links": {
+      "slack": "#team-systems",
+      "wiki": "https://wiki.example.com/teams/systems"
+    },
+    "relationships": [
+      {
+        "rel": "manages",
+        "target_id": "project_apollo"
+      }
+    ]
+  },
+  "context": {
+    "facts": [],
+    "snapshot_as_of": "2025-08-10"
+  },
+  "envelope": {
+    "kind": "EntityRecord",
+    "version": "1.0",
+    "type": "bnx.object",
+    "created_at": "2025-08-10T00:00:00Z",
+    "owner": {
+      "id": "user"
+    },
+    "privacy": {
+      "classification": "internal",
+      "pii": [],
+      "policy_tags": ["generic"]
+    },
+    "provenance": {
+      "sources": [
+        {
+          "kind": "seed",
+          "ref": "scaffold"
+        }
+      ]
+    },
+    "capabilities": ["read", "summarize", "link", "validate"],
+    "integrity": {
+      "sha256": "placeholder"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "body": {
+    "activity_id": "deploy_apollo",
+    "activity_type": "deployment",
+    "status": "planned",
+    "scheduling": {
+      "due_date": "2025-08-15T10:00:00Z",
+      "estimated_duration": "2h"
+    },
+    "payload": {
+      "environment": "staging",
+      "version": "1.2.0",
+      "rollback_plan": "auto"
+    },
+    "subject_refs": ["project_apollo"],
+    "audit": []
+  },
+  "context": {
+    "facts": [],
+    "snapshot_as_of": "2025-08-10"
+  },
+  "envelope": {
+    "kind": "ActivityRecord",
+    "version": "1.0",
+    "type": "bnx.object",
+    "created_at": "2025-08-10T00:00:00Z",
+    "owner": {
+      "id": "user"
+    },
+    "privacy": {
+      "classification": "internal",
+      "pii": [],
+      "policy_tags": ["generic"]
+    },
+    "provenance": {
+      "sources": [
+        {
+          "kind": "seed",
+          "ref": "scaffold"
+        }
+      ]
+    },
+    "capabilities": ["read", "summarize", "link", "validate"],
+    "integrity": {
+      "sha256": "placeholder"
+    }
+  }
+}

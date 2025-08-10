@@ -51,23 +51,86 @@ def load_and_apply_view(hash_id: str, view: str) -> dict:
         return obj2
     return obj
 
-def do_promote(dataset: str, channel: str, manifest: dict):
-    # Simple promotion - in real implementation this would update channel state
-    path = DATA / f"channels.yaml"
-    if path.exists():
-        channels = yaml.safe_load(path.read_text())
+def do_promote(dataset: str, channel: str, manifest_in, principal):
+    """
+    Promote a manifest to a channel with normalized storage format.
+    
+    Args:
+        dataset: Dataset name
+        channel: Channel name  
+        manifest_in: Either manifest ID (string) or full manifest (dict)
+        principal: Authenticated principal with user info
+    """
+    # 1) resolve manifest id + etag
+    if isinstance(manifest_in, str):
+        manifest_id = manifest_in
+        manifest_path = DATA / f"manifests/{dataset}/{manifest_id}.json"
+        if not manifest_path.exists():
+            raise HTTPException(
+                status_code=404, 
+                detail={"error": {"code": "not_found", "message": f"manifest not found: {manifest_id}"}}
+            )
+        manifest = json.loads(manifest_path.read_text())
+    elif isinstance(manifest_in, dict):
+        manifest = manifest_in
+        manifest_id = manifest.get("manifest_id") or manifest.get("id") or "unnamed"
+        # optional snapshot if no file exists
+        manifest_path = DATA / f"manifests/{dataset}/{manifest_id}.json"
+        if not manifest_path.exists():
+            manifest_path.parent.mkdir(parents=True, exist_ok=True)
+            manifest_path.write_text(json.dumps(manifest, indent=2))
+    else:
+        raise HTTPException(
+            status_code=400, 
+            detail={"error": {"code": "bad_request", "message": "manifest must be id or object"}}
+        )
+
+    # Extract etag from manifest - handle different manifest structures
+    etag = None
+    if "envelope" in manifest and "integrity" in manifest["envelope"]:
+        etag = manifest["envelope"]["integrity"].get("sha256")
+    elif "objects" in manifest and manifest["objects"]:
+        # Use first object hash as etag if no envelope integrity
+        etag = manifest["objects"][0].get("hash")
+    
+    if not etag:
+        # Fallback: generate a simple etag from manifest_id
+        etag = f"sha256:{manifest_id}"
+
+    # 2) load channels, normalize structure
+    channels_path = DATA / "channels.yaml"
+    if channels_path.exists():
+        channels = yaml.safe_load(channels_path.read_text()) or {}
     else:
         channels = {}
     
-    if dataset not in channels:
-        channels[dataset] = {}
-    if channel not in channels[dataset]:
-        channels[dataset][channel] = {}
+    ds = channels.setdefault(dataset, {})
     
-    channels[dataset][channel]["current"] = manifest
-    channels[dataset][channel]["promoted_at"] = datetime.now().isoformat()
+    # Handle legacy string format channels by converting to dict
+    if isinstance(ds.get(channel), str):
+        ds[channel] = {}
     
-    path.write_text(yaml.dump(channels, default_flow_style=False))
+    ch = ds.setdefault(channel, {})
+
+    # move current to history if it changed
+    now = datetime.utcnow().isoformat() + "Z"
+    by = principal.get("sub") or "unknown"
+    new_cur = {"id": manifest_id, "etag": etag, "promoted_at": now, "by": by}
+
+    # Handle legacy string values in current field
+    if "current" in ch:
+        current = ch["current"]
+        if isinstance(current, str):
+            # Legacy string format - convert to normalized structure for history
+            legacy_current = {"id": current, "etag": f"sha256:{current}", "promoted_at": now, "by": "legacy"}
+            ch.setdefault("history", []).append(legacy_current)
+        elif isinstance(current, dict) and current.get("id") != manifest_id:
+            ch.setdefault("history", []).append(current)
+
+    ch["current"] = new_cur
+    
+    # Write normalized structure
+    channels_path.write_text(yaml.dump(channels, default_flow_style=False))
 
 def etag_json(obj: dict, request: Request) -> Response:
     etag = obj.get("envelope",{}).get("integrity",{}).get("sha256")
@@ -94,7 +157,7 @@ def get_manifest(dataset: str, manifest_id: str, principal=Depends(require_beare
 @app.post("/channels/{dataset}/{channel}:promote")
 def promote_channel(dataset: str, channel: str, body: dict, principal=Depends(require_bearer)):
     require_scope(principal, "channels:promote")
-    do_promote(dataset, channel, body["manifest"])
+    do_promote(dataset, channel, body["manifest"], principal)
     return {"ok": True}
 
 
