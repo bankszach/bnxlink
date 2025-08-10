@@ -1,0 +1,7 @@
+{"ts": "2025-08-10T18:21:37Z", "event": "object.write", "hash": "sha256:1dc3d0e4809ec1c49d3ad5c524dadabbb5f80f9d7eb1053e3b5a0c71687f11a6", "ref": "data/refs/entity/project_apollo/2025-08-10.json"}
+{"ts": "2025-08-10T18:21:37Z", "event": "object.write", "hash": "sha256:aa657141baa2fa60294414623cba73b7df3968ba51f1067547cb4ff63406f09f", "ref": "data/refs/activity/task_generate_readme/2025-08-10.json"}
+{"ts": "2025-08-10T18:23:02Z", "event": "channel.promote", "dataset": "core", "channel": "staging", "manifest": "dev-seed"}
+{"ts": "2025-08-10T18:23:02Z", "event": "channel.promote", "dataset": "core", "channel": "prod", "manifest": "dev-seed"}
+{"event": "api.objects.get", "sub": "user:dev", "hash": "sha256:1dc3d0e4809ec1c49d3ad5c524dadabbb5f80f9d7eb1053e3b5a0c71687f11a6", "view": "llm_min", "ts": "2025-08-10T18:30:27.458880+00:00"}
+{"event": "api.manifests.get", "sub": "user:dev", "dataset": "core", "manifest": "dev-seed", "ts": "2025-08-10T18:30:30.595924+00:00"}
+{"event": "api.channels.promote", "sub": "user:dev", "dataset": "core", "channel": "staging", "manifest": "dev-seed", "ts": "2025-08-10T18:30:34.109398+00:00"}

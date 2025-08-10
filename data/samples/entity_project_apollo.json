@@ -1,0 +1,60 @@
+{
+  "envelope": {
+    "type": "bnx.object",
+    "version": "1.0",
+    "kind": "EntityRecord",
+    "owner": {
+      "id": "user"
+    },
+    "created_at": "2025-08-10T00:00:00Z",
+    "privacy": {
+      "classification": "internal",
+      "pii": [],
+      "policy_tags": [
+        "generic"
+      ]
+    },
+    "capabilities": [
+      "read",
+      "summarize",
+      "link",
+      "validate"
+    ],
+    "provenance": {
+      "sources": [
+        {
+          "kind": "seed",
+          "ref": "scaffold"
+        }
+      ]
+    },
+    "integrity": {
+      "sha256": null
+    }
+  },
+  "context": {
+    "snapshot_as_of": "2025-08-10",
+    "facts": []
+  },
+  "body": {
+    "entity_id": "project_apollo",
+    "entity_type": "project",
+    "labels": {
+      "env": "dev",
+      "team": "systems"
+    },
+    "attributes": {
+      "summary": "demo project",
+      "priority": "high"
+    },
+    "relationships": [
+      {
+        "rel": "owned_by",
+        "target_id": "team_systems"
+      }
+    ],
+    "links": {
+      "repo": "https://example.com/repo/apollo"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$id": "https://bnx.dev/schema/ActivityRecord.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ActivityRecord.v1",
+  "type": "object",
+  "required": ["activity_id","activity_type","status","subject_refs","scheduling"],
+  "properties": {
+    "activity_id": {"type":"string"},
+    "activity_type": {"type":"string"},
+    "status": {"enum":["planned","in_progress","completed","cancelled","failed"]},
+    "subject_refs": {"type":"array","items":{"type":"string"}},
+    "payload": {"type":"object"},
+    "scheduling": {
+      "type":"object",
+      "properties": {
+        "due_date":{"type":"string","format":"date-time"},
+        "start_date":{"type":"string","format":"date-time"},
+        "rrule":{"type":["string","null"]}
+      }
+    },
+    "audit": {
+      "type":"array",
+      "items":{"type":"object","properties":{
+        "ts":{"type":"string","format":"date-time"},
+        "actor":{"type":"string"},
+        "action":{"type":"string"},
+        "note":{"type":"string"}
+      }}
+    }
+  }
+}

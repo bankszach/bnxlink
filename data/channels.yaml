@@ -1,0 +1,3 @@
+core:
+  prod: dev-seed
+  staging: dev-seed

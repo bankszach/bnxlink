@@ -1,0 +1,58 @@
+{
+  "envelope": {
+    "type": "bnx.object",
+    "version": "1.0",
+    "kind": "ActivityRecord",
+    "owner": {
+      "id": "user"
+    },
+    "created_at": "2025-08-10T00:00:00Z",
+    "privacy": {
+      "classification": "internal",
+      "pii": [],
+      "policy_tags": [
+        "generic"
+      ]
+    },
+    "capabilities": [
+      "read",
+      "summarize",
+      "link",
+      "validate"
+    ],
+    "provenance": {
+      "sources": [
+        {
+          "kind": "seed",
+          "ref": "scaffold"
+        }
+      ]
+    },
+    "integrity": {
+      "sha256": null
+    }
+  },
+  "context": {
+    "snapshot_as_of": "2025-08-10",
+    "facts": []
+  },
+  "body": {
+    "activity_id": "task_generate_readme",
+    "activity_type": "task",
+    "status": "planned",
+    "subject_refs": [
+      "project_apollo"
+    ],
+    "payload": {
+      "format": "markdown",
+      "sections": [
+        "intro",
+        "usage"
+      ]
+    },
+    "scheduling": {
+      "due_date": "2025-08-11T17:00:00Z"
+    },
+    "audit": []
+  }
+}

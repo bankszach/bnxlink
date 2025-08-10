@@ -1,0 +1,26 @@
+{
+  "$id": "https://bnx.dev/schema/EntityRecord.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EntityRecord.v1",
+  "type": "object",
+  "required": ["entity_id", "entity_type", "labels"],
+  "properties": {
+    "entity_id": {"type":"string","pattern":"^[a-z0-9_\\-\\.]+$"},
+    "entity_type": {"type":"string"},
+    "labels": {"type":"object","additionalProperties":{"type":"string"}},
+    "attributes": {"type":"object"},
+    "relationships": {
+      "type":"array",
+      "items": {
+        "type":"object",
+        "required": ["rel","target_id"],
+        "properties": {
+          "rel":{"type":"string"},
+          "target_id":{"type":"string"},
+          "meta":{"type":"object"}
+        }
+      }
+    },
+    "links": {"type":"object"}
+  }
+}
