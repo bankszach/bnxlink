@@ -1,0 +1,27 @@
+{
+  "manifest_id": "test-manifest",
+  "dataset": "core",
+  "created_at": "2025-08-10T20:08:12Z",
+  "entries": [
+    {
+      "kind": "EntityRecord",
+      "logical_id": "project_apollo",
+      "date": "2025-08-10",
+      "object": "sha256:1dc3d0e4809ec1c49d3ad5c524dadabbb5f80f9d7eb1053e3b5a0c71687f11a6"
+    },
+    {
+      "kind": "ActivityRecord",
+      "logical_id": "task_generate_readme",
+      "date": "2025-08-10",
+      "object": "sha256:aa657141baa2fa60294414623cba73b7df3968ba51f1067547cb4ff63406f09f"
+    }
+  ],
+  "objects": [
+    {
+      "hash": "sha256:1dc3d0e4809ec1c49d3ad5c524dadabbb5f80f9d7eb1053e3b5a0c71687f11a6"
+    },
+    {
+      "hash": "sha256:aa657141baa2fa60294414623cba73b7df3968ba51f1067547cb4ff63406f09f"
+    }
+  ]
+}
